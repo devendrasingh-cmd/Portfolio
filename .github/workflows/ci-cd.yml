@@ -70,7 +70,7 @@ jobs:
           chmod 700 ~/.ssh
           printf '%s\n' "$AZURE_SSH_KEY" > ~/.ssh/azure_vm
           chmod 600 ~/.ssh/azure_vm
-          ssh-keyscan -H "$AZURE_HOST" >> ~/.ssh/known_hosts
+          ssh-keyscan -T 15 -v -H "$AZURE_HOST" >> ~/.ssh/known_hosts
 
       - name: Deploy on Azure VM
         env:
@@ -79,3 +79,4 @@ jobs:
         run: |
           ssh -i ~/.ssh/azure_vm "$AZURE_USER@$AZURE_HOST" \
             'cd ~/Portfolio && git pull --ff-only origin main && docker compose up -d --build && docker compose ps'
+
